@@ -20,5 +20,8 @@ class PlaceSeeder extends Seeder
             'latitude' => 40.7128,
             'longitude' => -74.0060,
         ]);
+
+        //Place::factory(10)->create();
+
     }
 }

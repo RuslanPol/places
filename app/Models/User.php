@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+    protected $table = 'users';
+    protected $guarded = [];
 
-    protected $fillable = ['login', 'password', 'is_admin'];
+    //protected $fillable = ['login', 'password', 'is_admin'];
 
     public function places()
     {

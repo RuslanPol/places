@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class UserPlace extends Model
 {
     use HasFactory;
+    protected $table = 'user_place';
+    protected $guarded = [];
 
-    protected $fillable = ['user_id', 'place_id'];
+    //protected $fillable = ['user_id', 'place_id'];
 }

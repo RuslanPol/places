@@ -21,5 +21,6 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'is_admin' => false,
         ]);
+        //User::factory(5)->create();
     }
 }

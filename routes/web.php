@@ -11,9 +11,9 @@ use App\Http\Controllers\UserController;
 
 
 Route::get('/users', [UserController::class, 'index']);
-Route::post('/users', [UserController::class, 'store']);
+Route::post('/users/create', [UserController::class, 'store']);
 Route::post('/users/{userId}/favorite-places', [UserController::class, 'addFavoritePlace']);
 Route::get('/users/{userId}/favorite-places', [UserController::class, 'getFavoritePlaces']);
 
 Route::get('/places', [PlaceController::class, 'index']);
-Route::post('/places', [PlaceController::class, 'store']);
+Route::post('/places/create', [PlaceController::class, 'store']);

@@ -30,4 +30,5 @@ COPY --chown=place_choose:place_choose . /var/www/html
 USER place_choose
 
 EXPOSE 8000
+
 CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
