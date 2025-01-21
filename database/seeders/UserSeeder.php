@@ -10,17 +10,19 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        User::create([
-            'login' => 'admin',
-            'password' => Hash::make('password'),
-            'is_admin' => true,
-        ]);
-
-        User::create([
-            'login' => 'user1',
-            'password' => Hash::make('password'),
-            'is_admin' => false,
-        ]);
-        //User::factory(5)->create();
+//        User::factory()->create([
+//            'name'=>'kuzia',
+//            'email' => 'kuzia@gmail.com',
+//            'password' => Hash::make('password'),
+//            'is_admin' => false,
+//        ]);
+//
+//        User::factory()->create([
+//            'name'=>'vasia',
+//            'email' => 'vasia@gmail.com',
+//            'password' => Hash::make('password'),
+//            'is_admin' => false,
+//        ]);
+        User::factory(5)->create();
     }
 }
