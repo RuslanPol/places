@@ -1,22 +1,24 @@
 <?php
 
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
-    protected $table = 'users';
-    protected $guarded = [];
+    protected $fillable = [
+        'login', 'password', 'is_admin'
+    ];
 
-    //protected $fillable = ['login', 'password', 'is_admin'];
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
 
-    public function places()
+    protected $casts = [
+        'is_admin' => 'boolean',
+    ];
+
+    public function favoritePlaces()
     {
-        return $this->belongsToMany(Place::class, 'user_places');
+        return $this->hasMany(FavoritePlace::class);
     }
 }

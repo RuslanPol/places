@@ -20,6 +20,10 @@ services:
             POSTGRES_DB: place_choose
             POSTGRES_USER: place_choose
             POSTGRES_PASSWORD: place_choose
+
+        ports:
+            - "8001:5432"
+
         volumes:
             - postgres_data:/var/lib/postgresql/data
 

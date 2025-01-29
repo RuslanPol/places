@@ -6,9 +6,12 @@ https://getcomposer.org/download/
 
 docker-compose up --build -d
 
-для заполнения фейковыми данными служит команда
+примеры запросов реализованы через views
 
-docker-compose exec app php artisan db:seed
+перейти 
+
+http://localhost:8000
+
 
 примеры запросов 
 
@@ -17,8 +20,8 @@ docker-compose exec app php artisan db:seed
 Примеры запросов:
 GET http://localhost:8000/places
 
-- POST http://localhost:8000/places/create
-- 
+- POST http://localhost:8000
+
 - {
   "name": "New Place",
   "latitude": 55.7558,
@@ -27,7 +30,7 @@ GET http://localhost:8000/places
 - 
 - GET http://localhost:8000/users
 - 
-- POST http://localhost:8000/users/create
+- POST http://localhost:8000/users
 
 
 

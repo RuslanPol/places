@@ -5,48 +5,95 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\UserPlace;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     public function index()
     {
-        return User::all();
+         $users=User::all();
+         return view('user.index',compact('users'));
+
+    }
+
+
+//    public function store()
+//    {
+//        $user = request()->validate([
+//            'login' => 'required|string|unique:users|max:255',
+//            'password' => 'required|string|min:8',
+//            'is_admin' => 'boolean',
+//        ]);
+//
+//        User::create([
+//        'name' => $user->name,
+//            'email' => $user->email,
+//            'password' => Hash::make($user->password),
+//            'is_admin' =>  $user->boolean('is_admin']);
+//        return redirect()->route('user.index');
+//    }
+
+
+    public function create()
+    {
+        return view('user.create');
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'login' => 'required|string|unique:users|max:255',
+        $validatedData = $request->validate([
+            'login' => 'required|string|max:255',
             'password' => 'required|string|min:8',
+            'is_admin' => 'nullable|boolean',
         ]);
 
-        $user = User::create([
-            'login' => $request->login,
-            'password' => bcrypt($request->password),
+        // Создание нового пользователя
+        User::create([
+            'login' => $validatedData['login'],
+            'password' => Hash::make($validatedData['password']),
+            'is_admin' => $validatedData['is_admin'] ?? false,
         ]);
 
-        return response()->json($user, 201);
+        return redirect()->route('user.index')->with('success', 'User created successfully.');
     }
 
-    public function addFavoritePlace(Request $request, $userId)
+    public function show(User $user)
     {
-        $user = User::findOrFail($userId);
+        return view('user.show', compact('user'));
+    }
 
+    public function addFavoritePlace(Request $request, User $user)
+    {
         $request->validate([
-            'place_id' => 'required|exists:places,id',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:favorite_places,name',
+                function ($attribute, $value, $fail) use ($user) {
+                    if ($user->favoritePlaces()->count() >= 3) {
+                        $fail('A user can have no more than 3 favorite places.');
+                    }
+                    if ($user->favoritePlaces()->where('name', $value)->exists()) {
+                        $fail('This place has already been added to the user\'s favorite places.');
+                    }
+                },
+            ],
         ]);
 
-        if ($user->places()->count() >= 3) {
-            return response()->json(['message' => 'User can have a maximum of 3 favorite places'], 400);
-        }
+        $user->favoritePlaces()->create([
+            'name' => $request->name,
+        ]);
 
-        if ($user->places()->where('place_id', $request->place_id)->exists()) {
-            return response()->json(['message' => 'Place already added to favorites'], 400);
-        }
-
-        $user->places()->attach($request->place_id);
-        return response()->json(['message' => 'Place added to favorites']);
+        return redirect()->route('user.show', $user)->with('success', 'Place added to favorite places successfully.');
     }
+
+    public function viewFavoritePlaces(User $user)
+    {
+        $favoritePlaces = $user->favoritePlaces;
+        return view('user.favorite_places', compact('user', 'favoritePlaces'));
+    }
+
 
     public function getFavoritePlaces($userId)
     {
